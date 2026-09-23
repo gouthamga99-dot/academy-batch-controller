@@ -5,41 +5,35 @@
 }
 
 :root {
-  /* Palette — mint green + teal blue */
-  --bg: #f0fdfa;
+  /* Palette — clean, professional light theme */
+  --bg: #f5f7fb;
   --surface: #ffffff;
-  --border: #e2ece9;
-  --ink: #042f2e;
-  --muted: #5a7a74;
-  --accent: #0f766e;
-  --accent-strong: #115e59;
-  --accent-ink: #0d9488;
-  --accent-soft: #f0fdfa;
-  --accent-border: #99f6e4;
-  --mint: #047857;
-  --mint-soft: #ecfdf5;
-  --mint-border: #a7f3d0;
-  --danger: #be123c;
-  --danger-soft: #fff1f2;
-  --danger-border: #ffe4e6;
-  --neutral-soft: #f7fbfa;
-  --live: #10b981;
+  --border: #dbe3ef;
+  --ink: #0b1220;
+  --muted: #55627a;
+  --accent: #1d4ed8;
+  --accent-strong: #1e40af;
+  --accent-soft: #eff4ff;
+  --accent-border: #c7d7fb;
+  --closed: #334155;
+  --closed-soft: #f1f5f9;
+  --closed-border: #dbe2ec;
+  --live: #15803d;
 
-  /* Spacing scale (8px base) */
+  /* Spacing scale */
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 24px;
   --space-6: 32px;
-  --space-7: 48px;
 
   /* Elevation */
-  --shadow-card: 0 1px 2px rgba(4, 47, 46, 0.05),
-    0 14px 40px rgba(4, 47, 46, 0.08);
-  --shadow-soft: 0 1px 2px rgba(4, 47, 46, 0.06);
+  --shadow-card: 0 1px 2px rgba(11, 18, 32, 0.05),
+    0 22px 50px rgba(11, 18, 32, 0.08);
+  --shadow-soft: 0 1px 2px rgba(11, 18, 32, 0.06);
 
-  --radius-lg: 24px;
-  --radius-md: 16px;
+  --radius-lg: 28px;
+  --radius-md: 18px;
 }
 
 html,
@@ -50,14 +44,16 @@ body {
 body {
   font-family: var(--font-inter), "Segoe UI", Roboto, Helvetica, Arial,
     sans-serif;
-  background: linear-gradient(180deg, #ffffff 0%, var(--bg) 55%, var(--mint-soft) 100%);
+  background: var(--bg);
   color: var(--ink);
   display: flex;
   align-items: center;
+  /* Keeps tall content reachable on short screens instead of clipping it. */
+  align-items: safe center;
   justify-content: center;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: var(--space-5);
+  padding: clamp(16px, 3vh, 40px);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -65,12 +61,12 @@ body {
 
 .screen {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: var(--space-6);
+  gap: clamp(16px, 3vh, 40px);
 }
 
 /* ---------- Header ---------- */
@@ -79,12 +75,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: 10px;
 }
 
 .title {
-  font-size: clamp(1rem, 1.6vw, 1.5rem);
-  font-weight: 600;
+  font-size: clamp(1rem, 1.6vw, 1.75rem);
+  font-weight: 800;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--ink);
@@ -94,33 +90,33 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-size: clamp(0.8rem, 1.1vw, 1rem);
-  font-weight: 600;
+  font-size: clamp(0.8rem, 1vw, 1rem);
+  font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--mint);
+  color: var(--live);
 }
 
 .live-dot {
-  width: 10px;
-  height: 10px;
+  width: 11px;
+  height: 11px;
   border-radius: 50%;
   background: var(--live);
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 0 0 4px rgba(21, 128, 61, 0.18);
   animation: pulse 2s ease-in-out infinite;
 }
 
 @keyframes pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 0 0 4px rgba(21, 128, 61, 0.18);
   }
   50% {
-    box-shadow: 0 0 0 7px rgba(16, 185, 129, 0.08);
+    box-shadow: 0 0 0 7px rgba(21, 128, 61, 0.06);
   }
 }
 
-/* ---------- Clock (priority 1) ---------- */
+/* ---------- Clock ---------- */
 
 .clock-block {
   display: flex;
@@ -130,8 +126,8 @@ body {
 }
 
 .clock {
-  font-size: clamp(3.6rem, 13vw, 9.5rem);
-  font-weight: 700;
+  font-size: clamp(3.25rem, 13vw, 15rem);
+  font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
@@ -139,146 +135,133 @@ body {
 }
 
 .date {
-  font-size: clamp(1.05rem, 2.2vw, 1.7rem);
-  font-weight: 500;
+  font-size: clamp(1rem, 2vw, 1.9rem);
+  font-weight: 600;
   color: var(--muted);
 }
 
-/* ---------- Current shift card (priority 2) ---------- */
+/* ---------- Quiet live time (classroom page) ---------- */
+
+.shift-clock {
+  display: inline-flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  font-size: clamp(1rem, 1.6vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.shift-clock-sep {
+  font-weight: 800;
+  color: var(--accent);
+}
+
+/* ---------- Current shift card (the only shift on screen) ---------- */
 
 .shift-card {
   width: 100%;
-  background: linear-gradient(135deg, var(--surface) 0%, var(--accent-soft) 100%);
+  background: var(--surface);
   border: 1px solid var(--accent-border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
-  padding: clamp(24px, 4vw, 48px);
+  padding: clamp(20px, 3.5vh, 48px) clamp(18px, 4vw, 56px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
+  gap: clamp(8px, 1.4vh, 18px);
 }
 
 .card-label {
-  font-size: clamp(0.75rem, 1.1vw, 0.95rem);
-  font-weight: 600;
-  letter-spacing: 0.24em;
+  font-size: clamp(0.8rem, 1.1vw, 1.2rem);
+  font-weight: 800;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--accent);
 }
 
 .shift-time {
-  font-size: clamp(2.4rem, 7vw, 5.5rem);
-  font-weight: 700;
-  line-height: 1.05;
+  font-size: clamp(2.4rem, 7.5vw, 9rem);
+  font-weight: 800;
+  line-height: 1.02;
   letter-spacing: -0.02em;
-  color: #134e4a;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent-strong);
 }
 
 .shift-name {
-  font-size: clamp(0.95rem, 1.8vw, 1.35rem);
-  font-weight: 600;
+  font-size: clamp(0.95rem, 1.7vw, 1.6rem);
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--mint);
+  color: var(--muted);
   min-height: 1.3em;
 }
 
-/* Pre-open / closed treatments */
+/* Before opening */
 .shift-card.info {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--neutral-soft) 100%);
+  background: var(--surface);
   border-color: var(--border);
 }
 
 .shift-card.info .shift-time {
-  font-size: clamp(2rem, 5.5vw, 4rem);
+  font-size: clamp(2rem, 6vw, 6.5rem);
   color: var(--ink);
 }
 
-.shift-card.info .shift-name {
+.shift-card.info .card-label {
   color: var(--muted);
 }
 
+/* After closing */
 .shift-card.closed {
-  background: linear-gradient(135deg, var(--surface) 0%, var(--danger-soft) 100%);
-  border-color: var(--danger-border);
+  background: var(--closed-soft);
+  border-color: var(--closed-border);
 }
 
-.shift-card.closed .shift-time,
-.shift-card.closed .shift-name {
-  color: var(--danger);
+.shift-card.closed .shift-time {
+  font-size: clamp(2rem, 6vw, 6.5rem);
+  color: var(--closed);
 }
 
-/* ---------- Next shift + countdown (priorities 3 & 4) ---------- */
-
-.next-row {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-5);
-}
-
-.next-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-soft);
-  padding: clamp(18px, 2.5vw, 30px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.next-card .card-label {
-  color: var(--muted);
-}
-
-.next-time {
-  font-size: clamp(1.5rem, 3.4vw, 2.75rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
-
-.countdown {
-  font-size: clamp(1.7rem, 3.8vw, 3rem);
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  font-variant-numeric: tabular-nums;
-  color: var(--accent-ink);
-}
-
-.next-note {
-  font-size: clamp(0.8rem, 1.2vw, 0.95rem);
-  color: var(--muted);
-  min-height: 1.2em;
+.shift-card.closed .card-label {
+  color: var(--closed);
 }
 
 /* ---------- /shift route: current shift only, extra large ---------- */
 
 .screen--shift {
-  gap: var(--space-7);
+  gap: clamp(24px, 5vh, 64px);
 }
 
-.screen--shift .shift-card {
-  padding: clamp(40px, 6vw, 80px);
-  gap: var(--space-4);
+.shift-card--hero {
+  padding: clamp(40px, 9vh, 110px) clamp(24px, 6vw, 90px);
+  gap: clamp(12px, 2.2vh, 30px);
+  box-shadow: 0 2px 6px rgba(11, 18, 32, 0.05),
+    0 34px 70px rgba(29, 78, 216, 0.12);
 }
 
-.screen--shift .shift-time {
-  font-size: clamp(3rem, 9vw, 7.5rem);
+.shift-card--hero .shift-time {
+  font-size: clamp(3rem, 11vw, 13rem);
 }
 
-.screen--shift .shift-name {
-  font-size: clamp(1.1rem, 2.2vw, 1.75rem);
+.shift-card--hero .card-label {
+  font-size: clamp(0.9rem, 1.4vw, 1.6rem);
 }
 
-.screen--shift .shift-card.info .shift-time {
-  font-size: clamp(2.4rem, 7vw, 5.5rem);
+.shift-card--hero .shift-name {
+  font-size: clamp(1.1rem, 2.2vw, 2.2rem);
 }
 
-/* ---------- View switch buttons ---------- */
+.shift-card--hero.info .shift-time,
+.shift-card--hero.closed .shift-time {
+  font-size: clamp(2.4rem, 8vw, 9rem);
+}
+
+/* ---------- Page switch button ---------- */
 
 .actions {
   display: flex;
@@ -290,13 +273,13 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  height: 54px;
-  padding: 0 30px;
+  gap: 12px;
+  min-height: clamp(52px, 6.5vh, 68px);
+  padding: 0 clamp(26px, 3vw, 44px);
   border-radius: 999px;
   font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: clamp(0.95rem, 1.15vw, 1.2rem);
+  font-weight: 800;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
@@ -305,15 +288,19 @@ body {
     border-color 0.15s ease;
 }
 
+.btn-icon {
+  flex: none;
+}
+
 .btn-primary {
   background: var(--accent);
   color: #ffffff;
-  box-shadow: 0 8px 20px rgba(13, 148, 136, 0.28);
+  box-shadow: 0 10px 24px rgba(29, 78, 216, 0.28);
 }
 
 .btn-primary:hover {
   background: var(--accent-strong);
-  box-shadow: 0 10px 24px rgba(13, 148, 136, 0.34);
+  box-shadow: 0 12px 28px rgba(29, 78, 216, 0.34);
 }
 
 .btn-primary:focus-visible {
@@ -323,19 +310,37 @@ body {
 
 .btn-ghost {
   background: var(--surface);
-  color: var(--accent);
+  color: var(--accent-strong);
   border: 1px solid var(--accent-border);
   box-shadow: var(--shadow-soft);
 }
 
 .btn-ghost:hover {
   background: var(--accent-soft);
-  border-color: var(--accent-ink);
+  border-color: var(--accent);
 }
 
 .btn-ghost:focus-visible {
   outline: 3px solid var(--accent-border);
   outline-offset: 3px;
+}
+
+/* The projector page keeps one quiet way back — never louder than the shift. */
+.screen--shift .btn-ghost {
+  min-height: clamp(44px, 5vh, 54px);
+  padding: 0 clamp(20px, 2vw, 32px);
+  font-size: clamp(0.8rem, 0.95vw, 1rem);
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  background: transparent;
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.screen--shift .btn-ghost:hover {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
 }
 
 /* ---------- Responsive ---------- */
@@ -345,13 +350,73 @@ body {
     gap: var(--space-5);
   }
 
-  .next-row {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
+  .title {
+    letter-spacing: 0.16em;
   }
 
-  .title {
-    letter-spacing: 0.18em;
+  .shift-card {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .shift-card--hero .shift-time {
+    font-size: clamp(2.1rem, 9vw, 4rem);
+  }
+
+  .btn {
+    width: min(100%, 420px);
+  }
+}
+
+/* Large panels (1440p / 4K TVs): push the shift past the 1080p ceiling.
+   Declared before the short-screen rule so a wide-but-short display (e.g.
+   1920x800) still gets the compact layout. */
+@media (min-width: 1700px) {
+  .shift-card--hero {
+    padding: clamp(50px, 10vh, 130px) clamp(30px, 5vw, 100px);
+  }
+
+  .shift-card--hero .shift-time {
+    font-size: clamp(3rem, 11vw, 15rem);
+  }
+
+  .shift-card--hero .card-label {
+    font-size: clamp(1rem, 1.3vw, 1.75rem);
+  }
+
+  .shift-card--hero .shift-name {
+    font-size: clamp(1.3rem, 2vw, 2.5rem);
+  }
+
+  .shift-clock {
+    font-size: clamp(1.1rem, 1.5vw, 1.9rem);
+  }
+}
+
+/* Short displays (16:9 laptops, small boards): tighten vertical rhythm */
+@media (max-height: 820px) and (min-width: 761px) {
+  .screen {
+    gap: clamp(12px, 2.4vh, 26px);
+  }
+
+  .clock {
+    font-size: clamp(3rem, 15vh, 8rem);
+  }
+
+  .shift-time {
+    font-size: clamp(2rem, 11vh, 5rem);
+  }
+
+  .shift-card {
+    padding: clamp(16px, 3vh, 30px) clamp(18px, 4vw, 56px);
+    gap: var(--space-2);
+  }
+
+  .shift-card--hero {
+    padding: clamp(24px, 7vh, 60px) clamp(24px, 6vw, 90px);
+  }
+
+  .shift-card--hero .shift-time {
+    font-size: clamp(2.6rem, 16vh, 7rem);
   }
 }
 

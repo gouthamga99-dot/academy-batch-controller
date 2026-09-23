@@ -1,4 +1,4 @@
-// Shared board header: title + LIVE indicator. Used by every route.
+// Board header: title + LIVE indicator. The only chrome on the display.
 export default function BoardHead() {
   return (
     <header className="head">

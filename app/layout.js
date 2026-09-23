@@ -9,13 +9,15 @@ const inter = Inter({
 
 export const metadata = {
   title: "Academy Batch Controller",
-  description: "Live display of the currently active academy shift (IST).",
+  description:
+    "Classroom display of the current time and the active academy shift.",
 };
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f0fdfa",
+  themeColor: "#f5f7fb",
+  colorScheme: "light",
 };
 
 export default function RootLayout({ children }) {

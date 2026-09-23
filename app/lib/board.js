@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-// Single source of truth for the day's schedule (IST minutes from midnight).
+// Single source of truth for the academy day, in minutes from local midnight.
+// The board follows the computer's own clock — no timezone conversion.
 export const SHIFTS = [
   {
     start: 9 * 60,
@@ -24,19 +25,15 @@ export const SHIFTS = [
   },
 ];
 
-// Current date/time parts in India Standard Time (UTC+05:30), regardless of
-// the machine's own timezone.
-export function istNow() {
-  const now = new Date();
-  return new Date(now.getTime() + (now.getTimezoneOffset() + 330) * 60000);
-}
+const DAY_SEC = 24 * 60 * 60;
+const OPEN_SEC = SHIFTS[0].start * 60; // 9:00 AM
+const CLOSE_SEC = SHIFTS[SHIFTS.length - 1].end * 60; // 6:00 PM
 
-// Exactly one current shift at any moment. Boundaries are half-open
-// (start <= t < end), so a shift changes exactly at 12:00 PM and 3:00 PM.
+// Exactly one current shift at any moment. Ranges are half-open
+// (start <= t < end), so the shift flips exactly at 12:00 PM and 3:00 PM.
 export function getBoard(sec) {
-  const openSec = SHIFTS[0].start * 60;
-
-  if (sec < openSec) {
+  // Before the academy opens.
+  if (sec < OPEN_SEC) {
     return {
       current: {
         text: "Academy Starts at 9:00 AM",
@@ -44,36 +41,38 @@ export function getBoard(sec) {
         state: "info",
       },
       next: SHIFTS[0],
-      remaining: openSec - sec,
-      note: null,
+      remaining: OPEN_SEC - sec,
     };
   }
 
   for (let i = 0; i < SHIFTS.length; i += 1) {
-    const endSec = SHIFTS[i].end * 60;
+    const shift = SHIFTS[i];
+    const endSec = shift.end * 60;
+
     if (sec < endSec) {
+      const following = SHIFTS[i + 1];
       return {
         current: {
-          text: SHIFTS[i].label,
-          name: SHIFTS[i].name,
+          text: shift.label,
+          name: shift.name,
           state: "active",
         },
-        next: SHIFTS[i + 1] || null,
+        // On the last shift of the day the "next" event is closing time.
+        next: following || { label: "Academy Closed", name: "Day Complete" },
         remaining: endSec - sec,
-        note: SHIFTS[i + 1] ? null : "No more shifts today",
       };
     }
   }
 
+  // After 6:00 PM: closed, counting down to tomorrow's first shift.
   return {
     current: {
       text: "Academy Closed",
       name: "All Shifts Completed",
       state: "closed",
     },
-    next: null,
-    remaining: 0,
-    note: "No more shifts today",
+    next: SHIFTS[0],
+    remaining: DAY_SEC - sec + OPEN_SEC,
   };
 }
 
@@ -87,13 +86,11 @@ export function formatClock(date) {
   return `${pad(h)}:${pad(date.getMinutes())}:${pad(date.getSeconds())} ${ampm}`;
 }
 
+// "Tuesday, 22 September 2026"
 export function formatDate(date) {
-  return date.toLocaleDateString("en-IN", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const weekday = date.toLocaleDateString("en-GB", { weekday: "long" });
+  const month = date.toLocaleDateString("en-GB", { month: "long" });
+  return `${weekday}, ${date.getDate()} ${month} ${date.getFullYear()}`;
 }
 
 export function formatCountdown(totalSeconds) {
@@ -105,7 +102,7 @@ export function formatCountdown(totalSeconds) {
 }
 
 export function snapshot() {
-  const now = istNow();
+  const now = new Date();
   const sec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
   const board = getBoard(sec);
 
@@ -115,9 +112,8 @@ export function snapshot() {
     shiftText: board.current.text,
     shiftName: board.current.name,
     shiftState: board.current.state,
-    nextLabel: board.next ? board.next.label : "—",
-    countdown: board.next ? formatCountdown(board.remaining) : "—",
-    note: board.note,
+    nextLabel: board.next.label,
+    countdown: formatCountdown(board.remaining),
   };
 }
 
@@ -129,13 +125,12 @@ function same(a, b) {
     a.shiftName === b.shiftName &&
     a.shiftState === b.shiftState &&
     a.nextLabel === b.nextLabel &&
-    a.countdown === b.countdown &&
-    a.note === b.note
+    a.countdown === b.countdown
   );
 }
 
-// Shared live data hook: checks 4x per second and only triggers a re-render
-// when a value actually changes. Used by every route.
+// Shared live data hook: checks 4x per second and only re-renders when a
+// value actually changes. No refresh is ever required.
 export function useBoard() {
   const [view, setView] = useState(null);
 
